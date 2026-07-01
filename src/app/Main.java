@@ -1,19 +1,14 @@
 package app;
 
-import model.Book;
+import service.BookService;
 
 public class Main {
+
     public static void main(String[] args) {
 
-        Book book = new Book(
-                101,
-                "Clean Code",
-                "Robert C. Martin",
-                "Programming",
-                650.0,
-                true
-        );
+        BookService bookService = new BookService();
 
-        System.out.println(book);
+        System.out.println("Application Started Successfully.");
+
     }
 }
