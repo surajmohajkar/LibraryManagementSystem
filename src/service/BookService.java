@@ -16,5 +16,16 @@ public class BookService {
     public List<Book> getBooks() {
         return books;
     }
+    public boolean addBook(Book newBook){
+        for(Book existingBook: books){
+            if(existingBook.getBookId() == newBook.getBookId()){
+                System.out.println("Book ID already exists");
+                return false;
+            }
+        }
+        books.add(newBook);
+        System.out.println("Book added successfully");
+        return true;
+    }
 }
 

@@ -18,7 +18,7 @@ public class Book {
         this.available = available;
     }
 
-    public int getBoodId() {
+    public int getBookId() {
         return bookId;
     }
     public String getTitle() {
