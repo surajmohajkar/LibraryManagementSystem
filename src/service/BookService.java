@@ -27,5 +27,8 @@ public class BookService {
         System.out.println("Book added successfully");
         return true;
     }
+    public List<Book>getAllBooks(){
+        return books;
+    }
 }
 
