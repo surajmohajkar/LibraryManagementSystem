@@ -1,53 +1,59 @@
 package app;
 
-import model.Book;
+
 import service.BookService;
 
-import java.util.List;
+import java.awt.*;
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
         BookService service = new BookService();
+        boolean running = true;
 
-        service.addBook(
-                new Book(
-                        101,
-                        "Clean Code",
-                        "Robert C. Martin",
-                        "Programming",
-                        650,
-                        true
-                )
-        );
-        service.addBook(
-                new Book(
-                        102,
-                        "Effective Java",
-                        "Joshua Bloch",
-                        "Programming",
-                        750,
-                        true
-                )
-        );
-        service.addBook(
-                new Book(
-                        103,
-                        "Head First Java",
-                        "Kathy Sierra",
-                        "Programming",
-                        550,
-                        true
-                )
-        );
-        List<Book> allBooks = service.getAllBooks();
-        if (allBooks.isEmpty()) {
-            System.out.println("No books available.");
-        } else {
-            System.out.println("\n========== LIBRARY BOOKS ==========\n");
-            for (Book book : allBooks) {
-                System.out.println(book);
+        while(running){
+
+            System.out.println("\n====================================");
+            System.out.println("      LIBRARY MANAGEMENT SYSTEM");
+            System.out.println("====================================");
+
+            System.out.println("1. Add Book");
+            System.out.println("2. View Books");
+            System.out.println("3. Search Book");
+            System.out.println("4. Update Book");
+            System.out.println("5. Delete Book");
+            System.out.println("6. Exit");
+
+            System.out.print("\nEnter your choice : ");
+
+            int choice = sc.nextInt();
+
+            switch(choice){
+                case 1:
+                    System.out.println("\nFeature Under Development.");
+                    break;
+                case 2:
+                    System.out.println("\nFeature Under Development.");
+                    break;
+                case 3:
+                    System.out.println("\nFeature Under Development.");
+                    break;
+                case 4:
+                    System.out.println("\nFeature Under Development.");
+                    break;
+                case 5:
+                    System.out.println("\nFeature Under Development.");
+                    break;
+                case 6:
+                    running = false;
+                    System.out.println("\nThank you for using Library Management System.");
+                    break;
+                default:
+                    System.out.println("\nInvalid Choice.");
             }
         }
+        sc.close();
     }
 }
