@@ -46,5 +46,14 @@ public class BookService {
         existingBook.setAvailable(updateBook.isAvailable());
         return true;
     }
+
+    public boolean deleteBook(int bookId){
+        Book existingBook = searchBook(bookId);
+        if(existingBook == null){
+            return false;
+        }
+        books.remove(existingBook);
+        return true;
+    }
 }
 

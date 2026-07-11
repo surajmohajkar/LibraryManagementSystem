@@ -116,7 +116,15 @@ public class Main {
                     }
                     break;
                 case 5:
-                    System.out.println("\nFeature Under Development.");
+                    System.out.println("\n========== DELETE BOOK ==========");
+                    System.out.println("Enter Book ID : ");
+                    int deleteId = sc.nextInt();
+                    boolean deleted = service.deleteBook(deleteId);
+                    if(deleted){
+                        System.out.println("\nBook deleted successfully.");
+                    }else {
+                        System.out.println("\nBook Not Found");
+                    }
                     break;
                 case 6:
                     running = false;
