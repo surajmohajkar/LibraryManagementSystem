@@ -5,6 +5,7 @@ import model.Book;
 import service.BookService;
 
 import java.awt.*;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -61,7 +62,16 @@ public class Main {
                     }
                     break;
                 case 2:
-                    System.out.println("\nFeature Under Development.");
+                    System.out.println("\n========== VIEW ALL BOOKS ==========\n");
+                    List<Book> allBooks = service.getAllBooks();
+                    if (allBooks.isEmpty()) {
+                        System.out.println("No books available in the library.");
+                    } else {
+                        for (Book book : allBooks) {
+                            System.out.println(book);
+                            System.out.println("--------------------------------");
+                        }
+                    }
                     break;
                 case 3:
                     System.out.println("\n========== SEARCH BOOK ==========");
@@ -77,7 +87,33 @@ public class Main {
                     }
                     break;
                 case 4:
-                    System.out.println("\nFeature Under Development.");
+                    System.out.println("\n========== UPDATE BOOK ==========");
+                    System.out.println("Enter Book ID : ");
+                    int updateId = sc.nextInt();
+                    sc.nextLine();
+
+                    Book existringBook = service.searchBook(updateId);
+                    if(existringBook == null){
+                        System.out.println("Book Not Found");
+                        break;
+                    }
+                    System.out.println("Enter New Title : ");
+                    String newTitle = sc.nextLine();
+                    System.out.println("Enter New Author : ");
+                    String newAuthor = sc.nextLine();
+                    System.out.println("Enter New Category : ");
+                    String newCategory = sc.nextLine();
+                    System.out.println("Enter New Price : ");
+                    double newPrice = sc.nextDouble();
+
+                    Book uodateBook = new Book(updateId, newTitle, newAuthor, newCategory, newPrice, true);
+
+                    boolean updated = service.updateBook(uodateBook);
+                    if(updated){
+                        System.out.println("\nBook updated successfully.");
+                    }else{
+                        System.out.println("\nBook Not Found");
+                    }
                     break;
                 case 5:
                     System.out.println("\nFeature Under Development.");

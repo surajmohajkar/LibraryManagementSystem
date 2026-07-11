@@ -34,5 +34,17 @@ public class BookService {
         }
         return null;
     }
+    public boolean updateBook(Book updateBook){
+        Book existingBook = searchBook(updateBook.getBookId());
+        if(existingBook == null){
+            return false;
+        }
+        existingBook.setTitle(updateBook.getTitle());
+        existingBook.setAuthor(updateBook.getAuthor());
+        existingBook.setCategory(updateBook.getCategory());
+        existingBook.setPrice(updateBook.getPrice());
+        existingBook.setAvailable(updateBook.isAvailable());
+        return true;
+    }
 }
 
