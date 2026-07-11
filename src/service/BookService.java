@@ -25,5 +25,14 @@ public class BookService {
     public List<Book>getAllBooks(){
         return books;
     }
+
+    public Book searchBook(int bookId){
+        for(Book book: books){
+            if(book.getBookId()==bookId){
+                return book;
+            }
+        }
+        return null;
+    }
 }
 

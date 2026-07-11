@@ -64,7 +64,17 @@ public class Main {
                     System.out.println("\nFeature Under Development.");
                     break;
                 case 3:
-                    System.out.println("\nFeature Under Development.");
+                    System.out.println("\n========== SEARCH BOOK ==========");
+
+                    System.out.println("\nEnter Book ID : ");
+                    int searchId = sc.nextInt();
+                    Book searchedBook = service.searchBook(searchId);
+                    if(searchedBook != null){
+                        System.out.println("\nBook Found");
+                        System.out.println(searchedBook);
+                    }else{
+                        System.out.println("\nBook Not Found");
+                    }
                     break;
                 case 4:
                     System.out.println("\nFeature Under Development.");
