@@ -10,21 +10,16 @@ public class BookService {
 
     public BookService(){
         books = new ArrayList<>();
-        System.out.println("BookService initialized Successfully");
     }
 
-    public List<Book> getBooks() {
-        return books;
-    }
     public boolean addBook(Book newBook){
         for(Book existingBook: books){
             if(existingBook.getBookId() == newBook.getBookId()){
-                System.out.println("Book ID already exists");
+                System.out.println("\nBook ID already exists.");
                 return false;
             }
         }
         books.add(newBook);
-        System.out.println("Book added successfully");
         return true;
     }
     public List<Book>getAllBooks(){

@@ -1,6 +1,7 @@
 package app;
 
 
+import model.Book;
 import service.BookService;
 
 import java.awt.*;
@@ -32,7 +33,32 @@ public class Main {
 
             switch(choice){
                 case 1:
-                    System.out.println("\nFeature Under Development.");
+                    System.out.println("\n========== ADD NEW BOOK ==========");
+
+                    System.out.println("Enter Book ID :");
+                    int bookId = sc.nextInt();
+                    sc.nextLine();
+
+                    System.out.println("Enter Book Title :");
+                    String title = sc.nextLine();
+
+                    System.out.println("Enter Book Author :");
+                    String author = sc.nextLine();
+
+                    System.out.println("Enter Category");
+                    String category = sc.nextLine();
+
+                    System.out.println("Enter Book Price :");
+                    double price = sc.nextDouble();
+
+                    Book newBook = new Book(bookId, title, author, category, price, true);
+
+                    boolean added = service.addBook(newBook);
+                    if(added){
+                        System.out.println("\nBook added successfully.");
+                    }else{
+                        System.out.println("\nBook could not be added.");
+                    }
                     break;
                 case 2:
                     System.out.println("\nFeature Under Development.");
