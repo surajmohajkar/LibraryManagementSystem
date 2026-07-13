@@ -32,6 +32,7 @@ public class Main {
             System.out.println("6. Exit");
             System.out.println("7. Register Member");
             System.out.println("8. View Members");
+            System.out.println("9. Search Member");
 
             System.out.print("\nEnter your choice : ");
 
@@ -178,6 +179,18 @@ public class Main {
                         for(Member member1 : allMembers){
                             System.out.println(member1);
                         }
+                    }
+                    break;
+                case 9:
+                    System.out.println("\n========== SEARCH MEMBER ==========");
+                    System.out.println("Enter Member ID : ");
+                    int searchMemberId = sc.nextInt();
+                    Member searchedMember = memberService.searchMember(searchMemberId);
+                    if(searchedMember != null){
+                        System.out.println("\nMember Found\n");
+                        System.out.println(searchedMember);
+                    }else{
+                        System.out.println("Member Not Found");
                     }
                     break;
                 default:
