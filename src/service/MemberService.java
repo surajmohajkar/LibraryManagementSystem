@@ -31,4 +31,7 @@ public class MemberService {
         }
         return null;
     }
+    public List<Member>getAllMembers(){
+        return members;
+    }
 }
