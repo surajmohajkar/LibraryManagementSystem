@@ -31,6 +31,7 @@ public class Main {
             System.out.println("5. Delete Book");
             System.out.println("6. Exit");
             System.out.println("7. Register Member");
+            System.out.println("8. View Members");
 
             System.out.print("\nEnter your choice : ");
 
@@ -166,6 +167,17 @@ public class Main {
                         System.out.println("\nMeber Registered Successfully.");
                     }else{
                         System.out.println("\nMember ID already exists.");
+                    }
+                    break;
+                case 8:
+                    System.out.println("\n========== REGISTERED MEMBERS ==========\n");
+                    List<Member>allMembers = memberService.getAllMembers();
+                    if(allMembers.isEmpty()){
+                        System.out.println("No members Registered.");
+                    }else{
+                        for(Member member1 : allMembers){
+                            System.out.println(member1);
+                        }
                     }
                     break;
                 default:
