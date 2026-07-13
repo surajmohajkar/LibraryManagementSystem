@@ -4,6 +4,7 @@ package app;
 import model.Book;
 import model.Member;
 import service.BookService;
+import service.MemberService;
 
 import java.awt.*;
 import java.util.List;
@@ -138,14 +139,9 @@ public class Main {
 //        sc.close();
 //    }
     public static void main(String[]args){
-        Member member = new Member(
-                1001,
-                "Suraj Mohajkar",
-                "9876543210",
-                "suraj@example.com",
-                "Student"
-        );
+        MemberService service =
+                new MemberService();
 
-        System.out.println(member);
+        System.out.println(service.getMembers());
     }
 }
