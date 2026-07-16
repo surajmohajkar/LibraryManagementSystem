@@ -34,5 +34,23 @@ public class MemberService {
     public List<Member>getAllMembers(){
         return members;
     }
-
+    public boolean updateMember(Member updateMember){
+        Member existingMember = searchMember(updateMember.getMemberId());
+        if(existingMember == null){
+            return false;
+        }
+        existingMember.setName(updateMember.getName());
+        existingMember.setPhoneNumber(updateMember.getPhoneNumber());
+        existingMember.setEmail(updateMember.getEmail());
+        existingMember.setMembershipType(updateMember.getMembershipType());
+        return true;
+    }
+    public boolean deleteMember(int memberId){
+        Member existingMember = searchMember(memberId);
+        if(existingMember == null){
+            return false;
+        }
+        members.remove(existingMember);
+        return true;
+    }
 }

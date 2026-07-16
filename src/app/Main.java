@@ -33,6 +33,8 @@ public class Main {
             System.out.println("7. Register Member");
             System.out.println("8. View Members");
             System.out.println("9. Search Member");
+            System.out.println("10. Update Members");
+            System.out.println("11. Delete Member");
 
             System.out.print("\nEnter your choice : ");
 
@@ -192,6 +194,44 @@ public class Main {
                     }else{
                         System.out.println("Member Not Found");
                     }
+                    break;
+                case 10:
+                    System.out.println("\n========== UPDATE MEMBER ==========");
+                    System.out.println("Enter Member ID : ");
+                    int updateMemberId = sc.nextInt();
+                    sc.nextLine();
+                    System.out.println("Enter New Name : ");
+                    String newName = sc.nextLine();
+                    System.out.println("Enter New Phone Number : ");
+                    String newPhone = sc.nextLine();
+                    System.out.println("Enter New Email : ");
+                    String newEmail = sc.nextLine();
+                    System.out.println("Enter New Membership Type : ");
+                    String newrMembershipType = sc.nextLine();
+                    Member updateMember = new Member(
+                            updateMemberId,
+                            newName,
+                            newPhone,
+                            newEmail,
+                            newrMembershipType
+                    );
+                    boolean updated1 = memberService.updateMember(updateMember);
+                    if(updated1){
+                        System.out.println("Member Updated Successfully.");
+                    }else{
+                        System.out.println("Member Not Updated");
+                    }
+                    break;
+                case 11:
+                    System.out.println("\n========== DELETE MEMBER ==========");
+                    System.out.println("Enter Member ID : ");
+                    int deleteMemberId = sc.nextInt();
+                    boolean deleted1= memberService.deleteMember(deleteMemberId);
+                    if(deleted1){
+                        System.out.println("Member Deleted Successfully.");
+                    }else{
+                        System.out.println("Member Not Found.");
+                }
                     break;
                 default:
                     System.out.println("\nInvalid Choice.");
