@@ -13,12 +13,14 @@ public class IssueService {
     private BookService bookService;
     private MemberService memberService;
     private int nextIssueId;
+
     public IssueService(BookService bookService, MemberService memberService) {
         this.issueRecords = new ArrayList<>();
         this.bookService = bookService;
         this.memberService = memberService;
         this.nextIssueId = 1;
     }
+
     public List<IssueRecord>getIssueRecords(){
         return issueRecords;
     }
@@ -45,10 +47,15 @@ public class IssueService {
             System.out.println("Book is already issued.");
             return false;
         }
-        IssueRecord record = new IssueRecord(nextIssueId, book, member, LocalDate.now(), LocalDate.now().plusDays(14),false);
+        IssueRecord record = new IssueRecord(
+                nextIssueId++,
+                book,
+                member,
+                LocalDate.now(),
+                LocalDate.now().plusDays(14),
+                false);
         issueRecords.add(record);
         book.setAvailable(false);
-        nextIssueId++;
         return true;
     }
 }
