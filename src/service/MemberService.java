@@ -53,4 +53,7 @@ public class MemberService {
         members.remove(existingMember);
         return true;
     }
+    public int getTotalMembers(){
+        return members.size();
+    }
 }

@@ -72,4 +72,26 @@ public class IssueService {
         issueRecord.getBook().setAvailable(true);
         return true;
     }
+    public int getTotalIssueReords(){
+        return issueRecords.size();
+    }
+    public int getActiveIssues(){
+        int count = 0;
+        for(IssueRecord record : issueRecords){
+            if(!record.isReturned()){
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int getReturnedBooks(){
+        int count = 0;
+        for(IssueRecord record : issueRecords){
+            if(record.isReturned()){
+                count++;
+            }
+        }
+        return count;
+    }
 }

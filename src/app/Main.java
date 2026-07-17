@@ -39,6 +39,7 @@ public class Main {
             System.out.println("11. Delete Member");
             System.out.println("12. Issue Book");
             System.out.println("13. Return Book");
+            System.out.println("14. View Reports");
 
             System.out.print("\nEnter your choice : ");
 
@@ -257,6 +258,24 @@ public class Main {
                     if(returned){
                         System.out.println("Book Returned Successfully.");
                     }
+                    break;
+                case 14:
+                    System.out.println("\n========== LIBRARY REPORT ==========\n");
+                    System.out.println("Books");
+                    System.out.println("---------------------------");
+                    System.out.println("Total Books   :"+bookService.getTotalBooks());
+                    System.out.println("Available Books :"+bookService.getAvailableBooks());
+                    System.out.println("Issued Books  :"+bookService.getIssuedBooks());
+                    System.out.println();
+                    System.out.println("Members");
+                    System.out.println("--------------------------");
+                    System.out.println("Total Members :"+memberService.getTotalMembers());
+                    System.out.println();
+                    System.out.println("Issued Records");
+                    System.out.println("--------------------------");
+                    System.out.println("Total Issues  :"+issueService.getTotalIssueReords());
+                    System.out.println("Active Issues   :"+issueService.getActiveIssues());
+                    System.out.println("Returned Books  :"+issueService.getReturnedBooks());
                     break;
                 default:
                     System.out.println("\nInvalid Choice.");

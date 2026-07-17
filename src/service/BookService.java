@@ -55,5 +55,20 @@ public class BookService {
         books.remove(existingBook);
         return true;
     }
+    public int getTotalBooks(){
+        return books.size();
+    }
+    public int getAvailableBooks(){
+        int count=0;
+        for(Book book: books){
+            if(book.isAvailable()){
+                count++;
+            }
+        }
+        return count;
+    }
+    public int getIssuedBooks(){
+        return books.size()-getAvailableBooks();
+    }
 }
 
