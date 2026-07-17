@@ -1,4 +1,4 @@
-//package app;
+package app;//package app;
 //
 //
 //import model.Book;
@@ -241,48 +241,126 @@
 //        sc.close();
 //    }
 //}
-package app;
 
+//IssueRecord Testing Code
+//package app;
+//
+//import model.Book;
+//import model.Member;
+//import model.IssueRecord;
+//
+//import java.time.LocalDate;
+//
+//public class Main {
+//
+//    public static void main(String[] args) {
+//
+//        // Create a sample Book object
+//        Book book = new Book(
+//                101,
+//                "Clean Code",
+//                "Robert C. Martin",
+//                "Programming",
+//                650,
+//                true
+//        );
+//
+//        // Create a sample Member object
+//        Member member = new Member(
+//                1001,
+//                "Suraj",
+//                "9876543210",
+//                "suraj@gmail.com",
+//                "Student"
+//        );
+//
+//        // Create an IssueRecord object
+//        IssueRecord record = new IssueRecord(
+//                1,
+//                book,
+//                member,
+//                LocalDate.now(),
+//                LocalDate.now().plusDays(14),
+//                false
+//        );
+//
+//        // Print the object
+//        System.out.println(record);
+//    }
+//}
+
+//IssueRecord Testing code
 import model.Book;
 import model.Member;
 import model.IssueRecord;
-
-import java.time.LocalDate;
+import service.BookService;
+import service.MemberService;
+import service.IssueService;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        // Create a sample Book object
-        Book book = new Book(
+        BookService bookService = new BookService();
+        MemberService memberService = new MemberService();
+        IssueService issueService = new IssueService(bookService, memberService);
+
+        bookService.addBook(new Book(
                 101,
                 "Clean Code",
                 "Robert C. Martin",
                 "Programming",
                 650,
                 true
-        );
+        ));
 
-        // Create a sample Member object
-        Member member = new Member(
+        bookService.addBook(new Book(
+                102,
+                "Effective Java",
+                "Joshua Bloch",
+                "Programming",
+                750,
+                true
+        ));
+
+        memberService.registerMember(new Member(
                 1001,
                 "Suraj",
                 "9876543210",
                 "suraj@gmail.com",
                 "Student"
-        );
+        ));
 
-        // Create an IssueRecord object
-        IssueRecord record = new IssueRecord(
-                1,
-                book,
-                member,
-                LocalDate.now(),
-                LocalDate.now().plusDays(14),
-                false
-        );
+        memberService.registerMember(new Member(
+                1002,
+                "Rahul",
+                "9988776655",
+                "rahul@gmail.com",
+                "Premium"
+        ));
 
-        // Print the object
-        System.out.println(record);
+        System.out.println("========== BOOKS ==========");
+        for (Book book : bookService.getAllBooks()) {
+            System.out.println(book);
+        }
+
+        System.out.println("\n========== MEMBERS ==========");
+        for (Member member : memberService.getAllMembers()) {
+            System.out.println(member);
+        }
+
+        System.out.println("\n========== ISSUE RECORDS ==========");
+        System.out.println(issueService.getIssueRecords());
+
+        System.out.println("\n========== SEARCH ISSUE RECORD ==========");
+
+        IssueRecord record = issueService.searchIssueRecord(1);
+
+        if (record != null) {
+            System.out.println(record);
+        } else {
+            System.out.println("Issue Record Not Found.");
+        }
+
     }
 }
