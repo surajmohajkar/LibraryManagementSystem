@@ -38,6 +38,7 @@ public class Main {
             System.out.println("10. Update Members");
             System.out.println("11. Delete Member");
             System.out.println("12. Issue Book");
+            System.out.println("13. Return Book");
 
             System.out.print("\nEnter your choice : ");
 
@@ -246,6 +247,15 @@ public class Main {
                     boolean issued = issueService.issueBook(issueBookId, issueMemberId);
                     if(issued){
                         System.out.println("Book Issued Successfully.");
+                    }
+                    break;
+                case 13:
+                    System.out.println("\n========== RETURN BOOK ==========");
+                    System.out.println("Enter Issue ID : ");
+                    int returnIssueId = sc.nextInt();
+                    boolean returned = issueService.returnBook(returnIssueId);
+                    if(returned){
+                        System.out.println("Book Returned Successfully.");
                     }
                     break;
                 default:

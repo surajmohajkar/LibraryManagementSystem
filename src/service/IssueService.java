@@ -58,4 +58,18 @@ public class IssueService {
         book.setAvailable(false);
         return true;
     }
+    public boolean returnBook(int issueId){
+        IssueRecord issueRecord = searchIssueRecord(issueId);
+        if(issueRecord==null){
+            System.out.println("Issue Record Not Found.");
+            return false;
+        }
+        if(issueRecord.isReturned()){
+            System.out.println("Book Already Returned.");
+            return false;
+        }
+        issueRecord.setReturned(true);
+        issueRecord.getBook().setAvailable(true);
+        return true;
+    }
 }
