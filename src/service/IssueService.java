@@ -1,5 +1,6 @@
 package service;
 
+import constants.AppConstants;
 import model.Book;
 import model.IssueRecord;
 import model.Member;
@@ -52,7 +53,7 @@ public class IssueService {
                 book,
                 member,
                 LocalDate.now(),
-                LocalDate.now().plusDays(14),
+                LocalDate.now().plusDays(AppConstants.BOOK_ISSUE_DAYS),
                 false);
         issueRecords.add(record);
         book.setAvailable(false);

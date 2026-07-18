@@ -1,6 +1,7 @@
 package app;
 
 
+import constants.AppConstants;
 import model.Book;
 import model.Member;
 import service.BookService;
@@ -247,7 +248,7 @@ public class Main {
 
                     boolean issued = issueService.issueBook(issueBookId, issueMemberId);
                     if(issued){
-                        System.out.println("Book Issued Successfully.");
+                        System.out.println(AppConstants.BOOK_ISSUED_SUCCESS);
                     }
                     break;
                 case 13:
@@ -260,7 +261,7 @@ public class Main {
                     }
                     break;
                 case 14:
-                    System.out.println("\n========== LIBRARY REPORT ==========\n");
+                    System.out.println(AppConstants.REPORT_TITLE);
                     System.out.println("Books");
                     System.out.println("---------------------------");
                     System.out.println("Total Books   :"+bookService.getTotalBooks());
