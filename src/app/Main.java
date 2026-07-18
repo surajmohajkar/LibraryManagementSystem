@@ -2,13 +2,14 @@ package app;
 
 
 import constants.AppConstants;
+import enums.BookCategory;
+import enums.MembershipType;
 import model.Book;
 import model.Member;
 import service.BookService;
 import service.IssueService;
 import service.MemberService;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Scanner;
 
@@ -36,7 +37,7 @@ public class Main {
             System.out.println("7. Register Member");
             System.out.println("8. View Members");
             System.out.println("9. Search Member");
-            System.out.println("10. Update Members");
+            System.out.println("10. Update Member");
             System.out.println("11. Delete Member");
             System.out.println("12. Issue Book");
             System.out.println("13. Return Book");
@@ -60,8 +61,9 @@ public class Main {
                     System.out.println("Enter Book Author :");
                     String author = sc.nextLine();
 
-                    System.out.println("Enter Category");
-                    String category = sc.nextLine();
+                    System.out.print("Enter Book Category : ");
+                    String categoryInput1 = sc.nextLine().trim().toUpperCase();
+                    BookCategory category = BookCategory.valueOf(categoryInput1);
 
                     System.out.println("Enter Book Price :");
                     double price = sc.nextDouble();
@@ -70,7 +72,7 @@ public class Main {
 
                     boolean added = bookService.addBook(newBook);
                     if(added){
-                        System.out.println("\nBook added successfully.");
+                        System.out.println("\n" + AppConstants.BOOK_ADDED_SUCCESS);
                     }else{
                         System.out.println("\nBook could not be added.");
                     }
@@ -106,8 +108,8 @@ public class Main {
                     int updateId = sc.nextInt();
                     sc.nextLine();
 
-                    Book existringBook = bookService.searchBook(updateId);
-                    if(existringBook == null){
+                    Book existingBook = bookService.searchBook(updateId);
+                    if(existingBook == null){
                         System.out.println("Book Not Found");
                         break;
                     }
@@ -116,13 +118,14 @@ public class Main {
                     System.out.println("Enter New Author : ");
                     String newAuthor = sc.nextLine();
                     System.out.println("Enter New Category : ");
-                    String newCategory = sc.nextLine();
+                    String categoryInput  = sc.nextLine().trim().toUpperCase();
+                    BookCategory newCategory = BookCategory.valueOf(categoryInput);
                     System.out.println("Enter New Price : ");
                     double newPrice = sc.nextDouble();
 
-                    Book uodateBook = new Book(updateId, newTitle, newAuthor, newCategory, newPrice, true);
+                    Book updatedBook = new Book(updateId, newTitle, newAuthor, newCategory, newPrice, true);
 
-                    boolean updated = bookService.updateBook(uodateBook);
+                    boolean updated = bookService.updateBook(updatedBook);
                     if(updated){
                         System.out.println("\nBook updated successfully.");
                     }else{
@@ -162,7 +165,8 @@ public class Main {
                     System.out.println("Enter Email : ");
                     String email = sc.nextLine();
                     System.out.println("Enter Membership Type : ");
-                    String membershipType = sc.nextLine();
+                    String membershipInput1 = sc.nextLine().trim().toUpperCase();
+                    MembershipType membershipType = MembershipType.valueOf(membershipInput1);
 
                     Member member = new Member(
                             memberId,
@@ -171,9 +175,9 @@ public class Main {
                             email,
                             membershipType
                     );
-                    boolean registered = memberService.registerMember(member);
-                    if(registered){
-                        System.out.println("\nMeber Registered Successfully.");
+                    boolean memberRegistered = memberService.registerMember(member);
+                    if(memberRegistered){
+                        System.out.println(AppConstants.MEMBER_ADDED_SUCCESS);
                     }else{
                         System.out.println("\nMember ID already exists.");
                     }
@@ -213,16 +217,17 @@ public class Main {
                     System.out.println("Enter New Email : ");
                     String newEmail = sc.nextLine();
                     System.out.println("Enter New Membership Type : ");
-                    String newrMembershipType = sc.nextLine();
+                    String membershipInput =sc.nextLine().trim().toUpperCase();
+                    MembershipType newMembershipType = MembershipType.valueOf(membershipInput);
                     Member updateMember = new Member(
                             updateMemberId,
                             newName,
                             newPhone,
                             newEmail,
-                            newrMembershipType
+                            newMembershipType
                     );
-                    boolean updated1 = memberService.updateMember(updateMember);
-                    if(updated1){
+                    boolean memberUpdated = memberService.updateMember(updateMember);
+                    if(memberUpdated){
                         System.out.println("Member Updated Successfully.");
                     }else{
                         System.out.println("Member Not Updated");
@@ -232,8 +237,8 @@ public class Main {
                     System.out.println("\n========== DELETE MEMBER ==========");
                     System.out.println("Enter Member ID : ");
                     int deleteMemberId = sc.nextInt();
-                    boolean deleted1= memberService.deleteMember(deleteMemberId);
-                    if(deleted1){
+                    boolean memberDeleted= memberService.deleteMember(deleteMemberId);
+                    if(memberDeleted){
                         System.out.println("Member Deleted Successfully.");
                     }else{
                         System.out.println("Member Not Found.");
@@ -257,7 +262,7 @@ public class Main {
                     int returnIssueId = sc.nextInt();
                     boolean returned = issueService.returnBook(returnIssueId);
                     if(returned){
-                        System.out.println("Book Returned Successfully.");
+                        System.out.println(AppConstants.BOOK_RETURNED_SUCCESS);
                     }
                     break;
                 case 14:
@@ -272,9 +277,9 @@ public class Main {
                     System.out.println("--------------------------");
                     System.out.println("Total Members :"+memberService.getTotalMembers());
                     System.out.println();
-                    System.out.println("Issued Records");
+                    System.out.println("Issue Records");
                     System.out.println("--------------------------");
-                    System.out.println("Total Issues  :"+issueService.getTotalIssueReords());
+                    System.out.println("Total Issues  :"+issueService.getTotalIssueRecords());
                     System.out.println("Active Issues   :"+issueService.getActiveIssues());
                     System.out.println("Returned Books  :"+issueService.getReturnedBooks());
                     break;

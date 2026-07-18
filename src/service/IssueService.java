@@ -14,37 +14,35 @@ public class IssueService {
     private BookService bookService;
     private MemberService memberService;
     private int nextIssueId;
-
     public IssueService(BookService bookService, MemberService memberService) {
         this.issueRecords = new ArrayList<>();
         this.bookService = bookService;
         this.memberService = memberService;
         this.nextIssueId = 1;
     }
-
-    public List<IssueRecord>getIssueRecords(){
+    public List<IssueRecord> getIssueRecords() {
         return issueRecords;
     }
-    public IssueRecord searchIssueRecord(int issueId){
-        for(IssueRecord record : issueRecords){
-            if(record.getIssueId() == issueId){
+    public IssueRecord searchIssueRecord(int issueId) {
+        for (IssueRecord record : issueRecords) {
+            if (record.getIssueId() == issueId) {
                 return record;
             }
         }
         return null;
     }
-    public boolean issueBook(int bookId, int memberId){
+    public boolean issueBook(int bookId, int memberId) {
         Book book = bookService.searchBook(bookId);
-        if(book==null){
-            System.out.println("Book not found.");
+        if (book == null) {
+            System.out.println(AppConstants.BOOK_NOT_FOUND);
             return false;
         }
         Member member = memberService.searchMember(memberId);
-        if(member == null){
-            System.out.println("Member not found.");
+        if (member == null) {
+            System.out.println(AppConstants.MEMBER_NOT_FOUND);
             return false;
         }
-        if(!book.isAvailable()){
+        if (!book.isAvailable()) {
             System.out.println("Book is already issued.");
             return false;
         }
@@ -54,42 +52,42 @@ public class IssueService {
                 member,
                 LocalDate.now(),
                 LocalDate.now().plusDays(AppConstants.BOOK_ISSUE_DAYS),
-                false);
+                false
+        );
         issueRecords.add(record);
         book.setAvailable(false);
         return true;
     }
-    public boolean returnBook(int issueId){
+    public boolean returnBook(int issueId) {
         IssueRecord issueRecord = searchIssueRecord(issueId);
-        if(issueRecord==null){
-            System.out.println("Issue Record Not Found.");
+        if (issueRecord == null) {
+            System.out.println(AppConstants.ISSUE_RECORD_NOT_FOUND);
             return false;
         }
-        if(issueRecord.isReturned()){
-            System.out.println("Book Already Returned.");
+        if (issueRecord.isReturned()) {
+            System.out.println(AppConstants.BOOK_ALREADY_RETURNED);
             return false;
         }
         issueRecord.setReturned(true);
         issueRecord.getBook().setAvailable(true);
         return true;
     }
-    public int getTotalIssueReords(){
+    public int getTotalIssueRecords() {
         return issueRecords.size();
     }
-    public int getActiveIssues(){
+    public int getActiveIssues() {
         int count = 0;
-        for(IssueRecord record : issueRecords){
-            if(!record.isReturned()){
+        for (IssueRecord record : issueRecords) {
+            if (!record.isReturned()) {
                 count++;
             }
         }
         return count;
     }
-
-    public int getReturnedBooks(){
+    public int getReturnedBooks() {
         int count = 0;
-        for(IssueRecord record : issueRecords){
-            if(record.isReturned()){
+        for (IssueRecord record : issueRecords) {
+            if (record.isReturned()) {
                 count++;
             }
         }

@@ -1,15 +1,17 @@
 package model;
 
+import enums.BookCategory;
+
 public class Book {
     private int bookId;
     private String title;
     private String author;
-    private String category;
+    private BookCategory category;
     private double price;
     private boolean available;
 
-    public Book(int bookId, String title,String author,
-                String category,double price, boolean available){
+    public Book(int bookId, String title, String author,
+                BookCategory category, double price, boolean available){
         this.bookId = bookId;
         this.title = title;
         this.author = author;
@@ -27,7 +29,7 @@ public class Book {
     public String getAuthor() {
         return author;
     }
-    public String getCategory() {
+    public BookCategory getCategory() {
         return category;
     }
     public double getPrice() {
@@ -43,7 +45,7 @@ public class Book {
     public void setAuthor(String author) {
         this.author = author;
     }
-    public void setCategory(String category) {
+    public void setCategory(BookCategory category) {
         this.category = category;
     }
     public void setPrice(double price) {
