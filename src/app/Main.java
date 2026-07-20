@@ -9,7 +9,10 @@ import model.Member;
 import service.BookService;
 import service.IssueService;
 import service.MemberService;
+import util.ConsoleUtil;
+import util.ValidationUtil;
 
+import java.io.Console;
 import java.util.List;
 import java.util.Scanner;
 
@@ -23,11 +26,7 @@ public class Main {
         boolean running = true;
 
         while(running){
-
-            System.out.println("\n====================================");
-            System.out.println("      LIBRARY MANAGEMENT SYSTEM");
-            System.out.println("====================================");
-
+            ConsoleUtil.printHeader("LIBRARY MANAGEMENT SYSTEM");
             System.out.println("1. Add Book");
             System.out.println("2. View Books");
             System.out.println("3. Search Book");
@@ -49,7 +48,7 @@ public class Main {
 
             switch(choice){
                 case 1:
-                    System.out.println("\n========== ADD NEW BOOK ==========");
+                    ConsoleUtil.printHeader("ADD NEW BOOK");
 
                     System.out.println("Enter Book ID :");
                     int bookId = sc.nextInt();
@@ -72,45 +71,44 @@ public class Main {
 
                     boolean added = bookService.addBook(newBook);
                     if(added){
-                        System.out.println("\n" + AppConstants.BOOK_ADDED_SUCCESS);
+                        ConsoleUtil.printSuccess(AppConstants.BOOK_ADDED_SUCCESS);
                     }else{
                         System.out.println("\nBook could not be added.");
                     }
                     break;
                 case 2:
-                    System.out.println("\n========== VIEW ALL BOOKS ==========\n");
+                    ConsoleUtil.printHeader("VIEW ALL BOOKS");
                     List<Book> allBooks = bookService.getAllBooks();
                     if (allBooks.isEmpty()) {
                         System.out.println("No books available in the library.");
                     } else {
                         for (Book book : allBooks) {
                             System.out.println(book);
-                            System.out.println("--------------------------------");
+                            ConsoleUtil.printLine();
                         }
                     }
                     break;
                 case 3:
-                    System.out.println("\n========== SEARCH BOOK ==========");
-
+                    ConsoleUtil.printHeader("SEARCH BOOK");
                     System.out.println("\nEnter Book ID : ");
                     int searchId = sc.nextInt();
                     Book searchedBook = bookService.searchBook(searchId);
                     if(searchedBook != null){
-                        System.out.println("\nBook Found");
+                        ConsoleUtil.printSuccess("Book Found");
                         System.out.println(searchedBook);
                     }else{
-                        System.out.println("\nBook Not Found");
+                        ConsoleUtil.printError("Book Not Found");
                     }
                     break;
                 case 4:
-                    System.out.println("\n========== UPDATE BOOK ==========");
+                    ConsoleUtil.printHeader("UPDATE BOOK");
                     System.out.println("Enter Book ID : ");
                     int updateId = sc.nextInt();
                     sc.nextLine();
 
                     Book existingBook = bookService.searchBook(updateId);
                     if(existingBook == null){
-                        System.out.println("Book Not Found");
+                        ConsoleUtil.printError(AppConstants.BOOK_NOT_FOUND);
                         break;
                     }
                     System.out.println("Enter New Title : ");
@@ -127,20 +125,20 @@ public class Main {
 
                     boolean updated = bookService.updateBook(updatedBook);
                     if(updated){
-                        System.out.println("\nBook updated successfully.");
+                        ConsoleUtil.printSuccess("\nBook updated successfully.");
                     }else{
-                        System.out.println("\nBook Not Found");
+                        ConsoleUtil.printError("\nBook Not Found");
                     }
                     break;
                 case 5:
-                    System.out.println("\n========== DELETE BOOK ==========");
+                    ConsoleUtil.printHeader("DELETE BOOK");
                     System.out.println("Enter Book ID : ");
                     int deleteId = sc.nextInt();
                     boolean deleted = bookService.deleteBook(deleteId);
                     if(deleted){
-                        System.out.println("\nBook deleted successfully.");
+                        ConsoleUtil.printSuccess("Book deleted successfully.");
                     }else {
-                        System.out.println("\nBook Not Found");
+                        ConsoleUtil.printError("Book Not Found");
                     }
                     break;
                 case 6:
@@ -148,14 +146,13 @@ public class Main {
                     System.out.println("\nThank you for using Library Management System.");
                     break;
                 case 7:
-
-                    System.out.println("\n========== REGISTER MEMBER ==========");
+                    ConsoleUtil.printHeader("REGISTER MEMBER");
                     System.out.println("Enter Member ID : ");
                     int memberId= sc.nextInt();
                     sc.nextLine();
                     Member existingMember = memberService.searchMember(memberId);
                     if(existingMember != null){
-                        System.out.println("Member ID already exists.");
+                        ConsoleUtil.printSuccess("Member ID already exists.");
                         break;
                     }
                     System.out.println("Enter Member Name : ");
@@ -177,13 +174,13 @@ public class Main {
                     );
                     boolean memberRegistered = memberService.registerMember(member);
                     if(memberRegistered){
-                        System.out.println(AppConstants.MEMBER_ADDED_SUCCESS);
+                        ConsoleUtil.printSuccess(AppConstants.MEMBER_ADDED_SUCCESS);
                     }else{
-                        System.out.println("\nMember ID already exists.");
+                        ConsoleUtil.printError("Member ID already exists.");
                     }
                     break;
                 case 8:
-                    System.out.println("\n========== REGISTERED MEMBERS ==========\n");
+                    ConsoleUtil.printHeader("VIEW MEMBERS");
                     List<Member>allMembers = memberService.getAllMembers();
                     if(allMembers.isEmpty()){
                         System.out.println("No members Registered.");
@@ -194,19 +191,19 @@ public class Main {
                     }
                     break;
                 case 9:
-                    System.out.println("\n========== SEARCH MEMBER ==========");
+                    ConsoleUtil.printHeader("SEARCH MEMBERS");
                     System.out.println("Enter Member ID : ");
                     int searchMemberId = sc.nextInt();
                     Member searchedMember = memberService.searchMember(searchMemberId);
                     if(searchedMember != null){
-                        System.out.println("\nMember Found\n");
+                        ConsoleUtil.printSuccess("Member Found");
                         System.out.println(searchedMember);
                     }else{
-                        System.out.println("Member Not Found");
+                        ConsoleUtil.printError(AppConstants.MEMBER_NOT_FOUND);
                     }
                     break;
                 case 10:
-                    System.out.println("\n========== UPDATE MEMBER ==========");
+                    ConsoleUtil.printHeader("UPDATE MEMBER");
                     System.out.println("Enter Member ID : ");
                     int updateMemberId = sc.nextInt();
                     sc.nextLine();
@@ -228,24 +225,24 @@ public class Main {
                     );
                     boolean memberUpdated = memberService.updateMember(updateMember);
                     if(memberUpdated){
-                        System.out.println("Member Updated Successfully.");
+                        ConsoleUtil.printSuccess("Member Updated Successfully.");
                     }else{
-                        System.out.println("Member Not Updated");
+                        ConsoleUtil.printError("Member Not Updated.");
                     }
                     break;
                 case 11:
-                    System.out.println("\n========== DELETE MEMBER ==========");
+                    ConsoleUtil.printHeader("DELETE MEMBERS");
                     System.out.println("Enter Member ID : ");
                     int deleteMemberId = sc.nextInt();
                     boolean memberDeleted= memberService.deleteMember(deleteMemberId);
                     if(memberDeleted){
-                        System.out.println("Member Deleted Successfully.");
+                        ConsoleUtil.printSuccess("Member Deleted Successfully.");
                     }else{
-                        System.out.println("Member Not Found.");
+                        ConsoleUtil.printError(AppConstants.MEMBER_NOT_FOUND);
                     }
                     break;
                 case 12:
-                    System.out.println("\n========== ISSUE BOOK ==========");
+                    ConsoleUtil.printHeader("ISSUE BOOK");
                     System.out.println("Enter Book ID : ");
                     int issueBookId = sc.nextInt();
                     System.out.println("Enter Member ID : ");
@@ -253,20 +250,20 @@ public class Main {
 
                     boolean issued = issueService.issueBook(issueBookId, issueMemberId);
                     if(issued){
-                        System.out.println(AppConstants.BOOK_ISSUED_SUCCESS);
+                        ConsoleUtil.printSuccess(AppConstants.BOOK_ISSUED_SUCCESS);
                     }
                     break;
                 case 13:
-                    System.out.println("\n========== RETURN BOOK ==========");
+                    ConsoleUtil.printHeader("RETURN BOOK");
                     System.out.println("Enter Issue ID : ");
                     int returnIssueId = sc.nextInt();
                     boolean returned = issueService.returnBook(returnIssueId);
                     if(returned){
-                        System.out.println(AppConstants.BOOK_RETURNED_SUCCESS);
+                        ConsoleUtil.printSuccess(AppConstants.BOOK_RETURNED_SUCCESS);
                     }
                     break;
                 case 14:
-                    System.out.println(AppConstants.REPORT_TITLE);
+                    ConsoleUtil.printHeader(AppConstants.REPORT_TITLE);
                     System.out.println("Books");
                     System.out.println("---------------------------");
                     System.out.println("Total Books   :"+bookService.getTotalBooks());
@@ -284,7 +281,7 @@ public class Main {
                     System.out.println("Returned Books  :"+issueService.getReturnedBooks());
                     break;
                 default:
-                    System.out.println("\nInvalid Choice.");
+                    ConsoleUtil.printError("Invalid Choice.");
             }
         }
         sc.close();
