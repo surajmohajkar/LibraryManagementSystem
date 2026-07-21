@@ -12,7 +12,6 @@ import service.MemberService;
 import util.ConsoleUtil;
 import util.ValidationUtil;
 
-import java.io.Console;
 import java.util.List;
 import java.util.Scanner;
 
@@ -22,7 +21,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         BookService bookService = new BookService();
         MemberService memberService = new MemberService();
-        IssueService issueService = new IssueService(bookService,memberService);
+        IssueService issueService = new IssueService(bookService, memberService);
         boolean running = true;
 
         while(running){
@@ -52,20 +51,38 @@ public class Main {
 
                     System.out.println("Enter Book ID :");
                     int bookId = sc.nextInt();
+                    if(!ValidationUtil.isPositive(bookId)){
+                        ConsoleUtil.printError("Book ID must be a greater than zero.");
+                        break;
+                    }
                     sc.nextLine();
 
                     System.out.println("Enter Book Title :");
                     String title = sc.nextLine();
+                    if(ValidationUtil.isNullOrEmpty(title)){
+                        ConsoleUtil.printError("Book Title Cannot Be Empty");
+                        break;
+                    }
 
                     System.out.println("Enter Book Author :");
                     String author = sc.nextLine();
+                    if(ValidationUtil.isNullOrEmpty(author)){
+                        ConsoleUtil.printError("Author Cannot Be Empty");
+                        break;
+                    }
 
                     System.out.print("Enter Book Category : ");
-                    String categoryInput1 = sc.nextLine().trim().toUpperCase();
-                    BookCategory category = BookCategory.valueOf(categoryInput1);
-
+                    BookCategory category = ValidationUtil.parseBookCategory(sc.nextLine());
+                    if (category == null) {
+                        ConsoleUtil.printError("Invalid Book Category.");
+                        break;
+                    }
                     System.out.println("Enter Book Price :");
                     double price = sc.nextDouble();
+                    if (!ValidationUtil.isPositive(price)) {
+                        ConsoleUtil.printError("Price must be greater than zero.");
+                        break;
+                    }
 
                     Book newBook = new Book(bookId, title, author, category, price, true);
 
@@ -92,6 +109,10 @@ public class Main {
                     ConsoleUtil.printHeader("SEARCH BOOK");
                     System.out.println("\nEnter Book ID : ");
                     int searchId = sc.nextInt();
+                    if (!ValidationUtil.isPositive(searchId)) {
+                        ConsoleUtil.printError("Invalid Book ID.");
+                        break;
+                    }
                     Book searchedBook = bookService.searchBook(searchId);
                     if(searchedBook != null){
                         ConsoleUtil.printSuccess("Book Found");
@@ -105,7 +126,10 @@ public class Main {
                     System.out.println("Enter Book ID : ");
                     int updateId = sc.nextInt();
                     sc.nextLine();
-
+                    if (!ValidationUtil.isPositive(updateId)) {
+                        ConsoleUtil.printError("Invalid Book ID.");
+                        break;
+                    }
                     Book existingBook = bookService.searchBook(updateId);
                     if(existingBook == null){
                         ConsoleUtil.printError(AppConstants.BOOK_NOT_FOUND);
@@ -116,10 +140,17 @@ public class Main {
                     System.out.println("Enter New Author : ");
                     String newAuthor = sc.nextLine();
                     System.out.println("Enter New Category : ");
-                    String categoryInput  = sc.nextLine().trim().toUpperCase();
-                    BookCategory newCategory = BookCategory.valueOf(categoryInput);
+                    BookCategory newCategory = ValidationUtil.parseBookCategory(sc.nextLine());
+                    if (newCategory == null) {
+                        ConsoleUtil.printError("Invalid Book Category.");
+                        break;
+                    }
                     System.out.println("Enter New Price : ");
                     double newPrice = sc.nextDouble();
+                    if(!ValidationUtil.isPositive(newPrice)){
+                        ConsoleUtil.printError("Price must be greater than zero.");
+                        break;
+                    }
 
                     Book updatedBook = new Book(updateId, newTitle, newAuthor, newCategory, newPrice, true);
 
@@ -134,6 +165,10 @@ public class Main {
                     ConsoleUtil.printHeader("DELETE BOOK");
                     System.out.println("Enter Book ID : ");
                     int deleteId = sc.nextInt();
+                    if(!ValidationUtil.isPositive(deleteId)){
+                        ConsoleUtil.printError("Invalid Book ID.");
+                        break;
+                    }
                     boolean deleted = bookService.deleteBook(deleteId);
                     if(deleted){
                         ConsoleUtil.printSuccess("Book deleted successfully.");
@@ -149,6 +184,10 @@ public class Main {
                     ConsoleUtil.printHeader("REGISTER MEMBER");
                     System.out.println("Enter Member ID : ");
                     int memberId= sc.nextInt();
+                    if(!ValidationUtil.isPositive(memberId)){
+                        ConsoleUtil.printError("Invalid Member ID");
+                        break;
+                    }
                     sc.nextLine();
                     Member existingMember = memberService.searchMember(memberId);
                     if(existingMember != null){
@@ -157,13 +196,28 @@ public class Main {
                     }
                     System.out.println("Enter Member Name : ");
                     String memberName = sc.nextLine();
+                    if(ValidationUtil.isNullOrEmpty(memberName)){
+                        ConsoleUtil.printError("Member Name cannot be empty.");
+                        break;
+                    }
                     System.out.println("Enter Phone Number : ");
                     String phoneNumber = sc.nextLine();
+                    if (!ValidationUtil.isValidPhone(phoneNumber)) {
+                        ConsoleUtil.printError("Phone number must contain exactly 10 digits.");
+                        break;
+                    }
                     System.out.println("Enter Email : ");
                     String email = sc.nextLine();
+                    if(!ValidationUtil.isValidEmail(email)){
+                        ConsoleUtil.printError("Invalid Email Address.");
+                        return;
+                    }
                     System.out.println("Enter Membership Type : ");
-                    String membershipInput1 = sc.nextLine().trim().toUpperCase();
-                    MembershipType membershipType = MembershipType.valueOf(membershipInput1);
+                    MembershipType membershipType = ValidationUtil.parseMembershipType(sc.nextLine());
+                    if (membershipType == null) {
+                        ConsoleUtil.printError("Invalid Membership Type.");
+                        break;
+                    }
 
                     Member member = new Member(
                             memberId,
@@ -194,6 +248,10 @@ public class Main {
                     ConsoleUtil.printHeader("SEARCH MEMBERS");
                     System.out.println("Enter Member ID : ");
                     int searchMemberId = sc.nextInt();
+                    if (!ValidationUtil.isPositive(searchMemberId)) {
+                        ConsoleUtil.printError("Invalid Member ID.");
+                        break;
+                    }
                     Member searchedMember = memberService.searchMember(searchMemberId);
                     if(searchedMember != null){
                         ConsoleUtil.printSuccess("Member Found");
@@ -207,15 +265,34 @@ public class Main {
                     System.out.println("Enter Member ID : ");
                     int updateMemberId = sc.nextInt();
                     sc.nextLine();
+                    if (!ValidationUtil.isPositive(updateMemberId)) {
+                        ConsoleUtil.printError("Invalid Member ID.");
+                        break;
+                    }
                     System.out.println("Enter New Name : ");
                     String newName = sc.nextLine();
+                    if (ValidationUtil.isNullOrEmpty(newName)) {
+                        ConsoleUtil.printError("Member name cannot be empty.");
+                        break;
+                    }
                     System.out.println("Enter New Phone Number : ");
                     String newPhone = sc.nextLine();
+                    if (!ValidationUtil.isValidPhone(newPhone)) {
+                        ConsoleUtil.printError("Phone number must contain exactly 10 digits.");
+                        break;
+                    }
                     System.out.println("Enter New Email : ");
                     String newEmail = sc.nextLine();
+                    if (!ValidationUtil.isValidEmail(newEmail)) {
+                        ConsoleUtil.printError("Invalid Email Address.");
+                        break;
+                    }
                     System.out.println("Enter New Membership Type : ");
-                    String membershipInput =sc.nextLine().trim().toUpperCase();
-                    MembershipType newMembershipType = MembershipType.valueOf(membershipInput);
+                    MembershipType newMembershipType = ValidationUtil.parseMembershipType(sc.nextLine());
+                    if (newMembershipType == null) {
+                        ConsoleUtil.printError("Invalid Membership Type.");
+                        break;
+                    }
                     Member updateMember = new Member(
                             updateMemberId,
                             newName,
@@ -234,6 +311,10 @@ public class Main {
                     ConsoleUtil.printHeader("DELETE MEMBERS");
                     System.out.println("Enter Member ID : ");
                     int deleteMemberId = sc.nextInt();
+                    if (!ValidationUtil.isPositive(deleteMemberId)) {
+                        ConsoleUtil.printError("Invalid Member ID.");
+                        break;
+                    }
                     boolean memberDeleted= memberService.deleteMember(deleteMemberId);
                     if(memberDeleted){
                         ConsoleUtil.printSuccess("Member Deleted Successfully.");
@@ -245,8 +326,16 @@ public class Main {
                     ConsoleUtil.printHeader("ISSUE BOOK");
                     System.out.println("Enter Book ID : ");
                     int issueBookId = sc.nextInt();
+                    if (!ValidationUtil.isPositive(issueBookId)) {
+                        ConsoleUtil.printError("Invalid Book ID.");
+                        break;
+                    }
                     System.out.println("Enter Member ID : ");
                     int issueMemberId = sc.nextInt();
+                    if (!ValidationUtil.isPositive(issueMemberId)) {
+                        ConsoleUtil.printError("Invalid Member ID.");
+                        break;
+                    }
 
                     boolean issued = issueService.issueBook(issueBookId, issueMemberId);
                     if(issued){
@@ -257,6 +346,10 @@ public class Main {
                     ConsoleUtil.printHeader("RETURN BOOK");
                     System.out.println("Enter Issue ID : ");
                     int returnIssueId = sc.nextInt();
+                    if (!ValidationUtil.isPositive(returnIssueId)) {
+                        ConsoleUtil.printError("Invalid Issue ID.");
+                        break;
+                    }
                     boolean returned = issueService.returnBook(returnIssueId);
                     if(returned){
                         ConsoleUtil.printSuccess(AppConstants.BOOK_RETURNED_SUCCESS);
