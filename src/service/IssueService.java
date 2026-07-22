@@ -4,6 +4,7 @@ import constants.AppConstants;
 import exception.BookAlreadyIssuedException;
 import exception.BookAlreadyReturnedException;
 import exception.IssueRecordNotFoundException;
+import interfaces.IssueServiceInterface;
 import model.Book;
 import model.IssueRecord;
 import model.Member;
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IssueService {
+public class IssueService implements IssueServiceInterface {
     private final List<IssueRecord> issueRecords;
     private final BookService bookService;
     private final MemberService memberService;
@@ -23,9 +24,11 @@ public class IssueService {
         this.memberService = memberService;
         this.nextIssueId = 1;
     }
+    @Override
     public List<IssueRecord> getIssueRecords() {
         return issueRecords;
     }
+    @Override
     public IssueRecord searchIssueRecord(int issueId) {
         for (IssueRecord record : issueRecords) {
             if (record.getIssueId() == issueId) {
@@ -34,6 +37,7 @@ public class IssueService {
         }
         throw new IssueRecordNotFoundException("Issue Record with ID " + issueId + " not found.");
     }
+    @Override
     public boolean issueBook(int bookId, int memberId) {
         Book book = bookService.searchBook(bookId);
         Member member = memberService.searchMember(memberId);
@@ -50,6 +54,7 @@ public class IssueService {
         book.setAvailable(false);
         return true;
     }
+    @Override
     public boolean returnBook(int issueId) {
         IssueRecord issueRecord = searchIssueRecord(issueId);
         if (issueRecord.isReturned()) {
@@ -59,9 +64,11 @@ public class IssueService {
         issueRecord.getBook().setAvailable(true);
         return true;
     }
+    @Override
     public int getTotalIssueRecords() {
         return issueRecords.size();
     }
+    @Override
     public int getActiveIssues() {
         int count = 0;
         for (IssueRecord record : issueRecords) {
@@ -71,6 +78,7 @@ public class IssueService {
         }
         return count;
     }
+    @Override
     public int getReturnedBooks() {
         int count = 0;
         for (IssueRecord record : issueRecords) {
