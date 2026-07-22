@@ -1,6 +1,9 @@
 package service;
 
 import constants.AppConstants;
+import exception.BookAlreadyIssuedException;
+import exception.BookAlreadyReturnedException;
+import exception.IssueRecordNotFoundException;
 import model.Book;
 import model.IssueRecord;
 import model.Member;
@@ -10,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IssueService {
-    private List<IssueRecord> issueRecords;
-    private BookService bookService;
-    private MemberService memberService;
+    private final List<IssueRecord> issueRecords;
+    private final BookService bookService;
+    private final MemberService memberService;
     private int nextIssueId;
     public IssueService(BookService bookService, MemberService memberService) {
         this.issueRecords = new ArrayList<>();
@@ -29,44 +32,28 @@ public class IssueService {
                 return record;
             }
         }
-        return null;
+        throw new IssueRecordNotFoundException("Issue Record with ID " + issueId + " not found.");
     }
     public boolean issueBook(int bookId, int memberId) {
         Book book = bookService.searchBook(bookId);
-        if (book == null) {
-            System.out.println(AppConstants.BOOK_NOT_FOUND);
-            return false;
-        }
         Member member = memberService.searchMember(memberId);
-        if (member == null) {
-            System.out.println(AppConstants.MEMBER_NOT_FOUND);
-            return false;
-        }
         if (!book.isAvailable()) {
-            System.out.println("Book is already issued.");
-            return false;
+            throw new BookAlreadyIssuedException("Book is already issued.");
         }
         IssueRecord record = new IssueRecord(
                 nextIssueId++,
                 book,
                 member,
                 LocalDate.now(),
-                LocalDate.now().plusDays(AppConstants.BOOK_ISSUE_DAYS),
-                false
-        );
+                LocalDate.now().plusDays(AppConstants.BOOK_ISSUE_DAYS),false);
         issueRecords.add(record);
         book.setAvailable(false);
         return true;
     }
     public boolean returnBook(int issueId) {
         IssueRecord issueRecord = searchIssueRecord(issueId);
-        if (issueRecord == null) {
-            System.out.println(AppConstants.ISSUE_RECORD_NOT_FOUND);
-            return false;
-        }
         if (issueRecord.isReturned()) {
-            System.out.println(AppConstants.BOOK_ALREADY_RETURNED);
-            return false;
+            throw new BookAlreadyReturnedException("Book has already been returned.");
         }
         issueRecord.setReturned(true);
         issueRecord.getBook().setAvailable(true);
