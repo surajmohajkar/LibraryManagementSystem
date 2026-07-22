@@ -4,6 +4,9 @@ package app;
 import constants.AppConstants;
 import enums.BookCategory;
 import enums.MembershipType;
+import interfaces.BookServiceInterface;
+import interfaces.IssueServiceInterface;
+import interfaces.MemberServiceInterface;
 import model.Book;
 import model.Member;
 import service.BookService;
@@ -20,9 +23,9 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        BookService bookService = new BookService();
-        MemberService memberService = new MemberService();
-        IssueService issueService = new IssueService(bookService, memberService);
+        BookServiceInterface bookService = new BookService();
+        MemberServiceInterface memberService = new MemberService();
+        IssueServiceInterface issueService = new IssueService((BookService) bookService, (MemberService) memberService);
         boolean running = true;
 
         while(running){
