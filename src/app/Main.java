@@ -8,6 +8,7 @@ import interfaces.BookServiceInterface;
 import interfaces.IssueServiceInterface;
 import interfaces.MemberServiceInterface;
 import model.Book;
+import model.IssueRecord;
 import model.Member;
 import service.BookService;
 import service.IssueService;
@@ -25,7 +26,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         BookServiceInterface bookService = new BookService();
         MemberServiceInterface memberService = new MemberService();
-        IssueServiceInterface issueService = new IssueService((BookService) bookService, (MemberService) memberService);
+        IssueServiceInterface issueService = new IssueService(bookService, memberService);
         boolean running = true;
 
         while(running){
@@ -44,6 +45,7 @@ public class Main {
             System.out.println("12. Issue Book");
             System.out.println("13. Return Book");
             System.out.println("14. View Reports");
+            System.out.println("15. View Issue Records");
 
             System.out.print("\nEnter your choice : ");
 
@@ -392,6 +394,18 @@ public class Main {
                     System.out.println("Total Issues     : " + issueService.getTotalIssueRecords());
                     System.out.println("Active Issues    : " + issueService.getActiveIssues());
                     System.out.println("Returned Books   : " + issueService.getReturnedBooks());
+                    break;
+                case 15:
+                    ConsoleUtil.printHeader("VIEW ISSUE RECORDS");
+                    List<IssueRecord> issueRecords = issueService.getIssueRecords();
+                    if (issueRecords.isEmpty()) {
+                        ConsoleUtil.printError("No issue records found.");
+                    } else {
+                        for (IssueRecord record : issueRecords) {
+                            System.out.println(record);
+                            ConsoleUtil.printLine();
+                        }
+                    }
                     break;
                 default:
                     ConsoleUtil.printError("Invalid Choice.");

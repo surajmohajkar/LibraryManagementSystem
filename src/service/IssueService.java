@@ -4,7 +4,9 @@ import constants.AppConstants;
 import exception.BookAlreadyIssuedException;
 import exception.BookAlreadyReturnedException;
 import exception.IssueRecordNotFoundException;
+import interfaces.BookServiceInterface;
 import interfaces.IssueServiceInterface;
+import interfaces.MemberServiceInterface;
 import model.Book;
 import model.IssueRecord;
 import model.Member;
@@ -15,10 +17,10 @@ import java.util.List;
 
 public class IssueService implements IssueServiceInterface {
     private final List<IssueRecord> issueRecords;
-    private final BookService bookService;
-    private final MemberService memberService;
+    private final BookServiceInterface bookService;
+    private final MemberServiceInterface memberService;
     private int nextIssueId;
-    public IssueService(BookService bookService, MemberService memberService) {
+    public IssueService(BookServiceInterface bookService, MemberServiceInterface memberService) {
         this.issueRecords = new ArrayList<>();
         this.bookService = bookService;
         this.memberService = memberService;
