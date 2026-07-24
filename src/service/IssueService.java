@@ -10,7 +10,8 @@ import interfaces.MemberServiceInterface;
 import model.Book;
 import model.IssueRecord;
 import model.Member;
-
+import java.util.Collections;
+import java.util.Objects;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,15 +21,16 @@ public class IssueService implements IssueServiceInterface {
     private final BookServiceInterface bookService;
     private final MemberServiceInterface memberService;
     private int nextIssueId;
+
     public IssueService(BookServiceInterface bookService, MemberServiceInterface memberService) {
         this.issueRecords = new ArrayList<>();
-        this.bookService = bookService;
-        this.memberService = memberService;
+        this.bookService = Objects.requireNonNull(bookService, "BookService cannot be null");
+        this.memberService = Objects.requireNonNull(memberService, "MemberService cannot be null");
         this.nextIssueId = 1;
     }
     @Override
     public List<IssueRecord> getIssueRecords() {
-        return issueRecords;
+        return Collections.unmodifiableList(issueRecords);
     }
     @Override
     public IssueRecord searchIssueRecord(int issueId) {

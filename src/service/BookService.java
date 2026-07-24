@@ -5,6 +5,7 @@ import exception.DuplicateBookException;
 import interfaces.BookServiceInterface;
 import model.Book;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class BookService implements BookServiceInterface {
@@ -25,9 +26,8 @@ public class BookService implements BookServiceInterface {
     }
     @Override
     public List<Book> getAllBooks() {
-        return books;
+        return Collections.unmodifiableList(books);
     }
-
     @Override
     public Book searchBook(int bookId) {
         for (Book book : books) {

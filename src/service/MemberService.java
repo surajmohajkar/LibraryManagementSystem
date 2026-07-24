@@ -4,9 +4,9 @@ import exception.DuplicateMemberException;
 import exception.MemberNotFoundException;
 import interfaces.MemberServiceInterface;
 import model.Member;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 public class MemberService implements MemberServiceInterface {
     private final List<Member> members;
@@ -33,7 +33,7 @@ public class MemberService implements MemberServiceInterface {
     }
     @Override
     public List<Member> getAllMembers() {
-        return members;
+        return Collections.unmodifiableList(members);
     }
     @Override
     public boolean updateMember(Member updatedMember) {
