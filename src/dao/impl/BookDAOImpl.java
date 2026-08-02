@@ -51,14 +51,7 @@ public class BookDAOImpl implements BookDAO {
             preparedStatement.setInt(1,bookId);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
-                return new Book(
-                        resultSet.getInt("book_id"),
-                        resultSet.getString("title"),
-                        resultSet.getString("author"),
-                        BookCategory.valueOf(resultSet.getString("category")),
-                        resultSet.getDouble("price"),
-                        resultSet.getBoolean("is_available")
-                );
+                return mapResultSetToBook(resultSet);
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -113,5 +106,16 @@ public class BookDAOImpl implements BookDAO {
     @Override
     public int getIssuedBooks() {
         return 0;
+    }
+
+    private Book mapResultSetToBook(ResultSet resultSet) throws SQLException {
+        return new Book(
+                resultSet.getInt("book_id"),
+                resultSet.getString("title"),
+                resultSet.getString("author"),
+                BookCategory.valueOf(resultSet.getString("category")),
+                resultSet.getDouble("price"),
+                resultSet.getBoolean("is_available")
+        );
     }
 }
