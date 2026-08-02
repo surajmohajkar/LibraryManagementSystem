@@ -8,8 +8,8 @@ import model.Book;
 public class Main{
     public static void main(String[] args) {
         BookDAO dao = new BookDAOImpl();
-        System.out.println(dao.existsById(101));
-        System.out.println(dao.existsById(999));
+        Book book = dao.getBookById(101);
+        System.out.println(book);
     }
 }
 //
