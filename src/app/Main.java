@@ -6,24 +6,10 @@ import enums.BookCategory;
 import model.Book;
 
 public class Main{
-
     public static void main(String[] args) {
-
         BookDAO dao = new BookDAOImpl();
-
-        Book book = new Book(
-                1001,
-                "Java Complete Reference",
-                "Herbert Schildt",
-                BookCategory.TECHNOLOGY,
-                799.0,
-                true
-        );
-
-        boolean added = dao.addBook(book);
-
-        System.out.println(added);
-
+        System.out.println(dao.existsById(101));
+        System.out.println(dao.existsById(999));
     }
 }
 //

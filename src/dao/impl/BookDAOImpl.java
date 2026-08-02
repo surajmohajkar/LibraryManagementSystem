@@ -55,7 +55,21 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public boolean existsById(int bookId) {
-        return false;
+        String sql = """
+        SELECT 1
+        FROM book
+        WHERE book_id = ?
+        """;
+        try (
+                Connection connection = DBConnection.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, bookId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
