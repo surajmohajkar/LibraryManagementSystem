@@ -5,10 +5,17 @@ import dao.impl.BookDAOImpl;
 import enums.BookCategory;
 import model.Book;
 
+import java.util.List;
+
 public class Main{
     public static void main(String[] args) {
         BookDAO dao = new BookDAOImpl();
-        System.out.println(dao.getBookById(101));
+
+        List<Book> books = dao.getAllBooks();
+
+        for (Book book : books) {
+            System.out.println(book);
+        }
     }
 }
 //

@@ -61,7 +61,29 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public List<Book> getAllBooks() {
-        return List.of();
+        String sql = """
+            SELECT
+                book_id,
+                title,
+                author,
+                category,
+                price,
+                is_available
+            FROM book
+            ORDER BY book_id
+            """;
+        List<Book>books = new ArrayList<>();
+        try(Connection connection = DBConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery()
+            ){
+            while (resultSet.next()){
+                books.add(mapResultSetToBook(resultSet));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return books;
     }
 
     @Override
