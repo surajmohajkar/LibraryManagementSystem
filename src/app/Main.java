@@ -9,14 +9,11 @@ import java.util.List;
 
 public class Main{
     public static void main(String[] args) {
+        Book updatedBook = new Book(101, "Clean Code Second Edition", "Robert C. Martin",
+                        BookCategory.TECHNOLOGY, 899, true);
         BookDAO dao = new BookDAOImpl();
-
-        List<Book> books = dao.getAllBooks();
-
-        for (Book book : books) {
-            System.out.println(book);
+        System.out.println(dao.updateBook(updatedBook));
         }
-    }
 }
 //
 //import constants.AppConstants;
