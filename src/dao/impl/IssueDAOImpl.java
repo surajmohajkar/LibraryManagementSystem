@@ -1,4 +1,4 @@
-package daoImplementation;
+package dao.impl;
 
 import dao.IssueDAO;
 import model.IssueRecord;

@@ -1,21 +1,28 @@
 package app;
-import database.DBConnection;
 
-import java.sql.Connection;
+import dao.BookDAO;
+import dao.impl.BookDAOImpl;
+import enums.BookCategory;
+import model.Book;
 
-public class Main {
+public class Main{
 
     public static void main(String[] args) {
 
-        try (Connection connection = DBConnection.getConnection()) {
+        BookDAO dao = new BookDAOImpl();
 
-            System.out.println("Connected Successfully!");
+        Book book = new Book(
+                1001,
+                "Java Complete Reference",
+                "Herbert Schildt",
+                BookCategory.TECHNOLOGY,
+                799.0,
+                true
+        );
 
-        } catch (Exception e) {
+        boolean added = dao.addBook(book);
 
-            e.printStackTrace();
-
-        }
+        System.out.println(added);
 
     }
 }

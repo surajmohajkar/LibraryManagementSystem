@@ -9,6 +9,7 @@ public interface  BookDAO {
     List<Book> getAllBooks();
     boolean updateBook(Book book);
     boolean deleteBook(int bookId);
+    boolean existsById(int bookId);
     int getTotalBooks();
     int getAvailableBooks();
     int getIssuedBooks();

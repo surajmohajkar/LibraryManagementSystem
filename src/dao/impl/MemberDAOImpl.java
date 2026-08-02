@@ -1,4 +1,4 @@
-package daoImplementation;
+package dao.impl;
 
 import dao.MemberDAO;
 import model.Member;
