@@ -11,9 +11,11 @@ public class Main{
     public static void main(String[] args) {
         BookDAO dao = new BookDAOImpl();
 
-        boolean deleted = dao.deleteBook(1001);
+        System.out.println("Total Books : " + dao.getTotalBooks());
 
-        System.out.println(deleted);
+        System.out.println("Available Books : " + dao.getAvailableBooks());
+
+        System.out.println("Issued Books : " + dao.getIssuedBooks());
         }
 }
 //
