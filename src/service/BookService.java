@@ -4,72 +4,59 @@ import exception.BookNotFoundException;
 import exception.DuplicateBookException;
 import interfaces.BookServiceInterface;
 import model.Book;
-import java.util.ArrayList;
-import java.util.Collections;
+import dao.BookDAO;
+import dao.impl.BookDAOImpl;
 import java.util.List;
 
 public class BookService implements BookServiceInterface {
-    private final List<Book> books;
+    private final BookDAO bookDAO;
     public BookService() {
-        books = new ArrayList<>();
+        this.bookDAO = new BookDAOImpl();
     }
 
     @Override
     public boolean addBook(Book newBook) {
-        for (Book existingBook : books) {
-            if (existingBook.getBookId() == newBook.getBookId()) {
-                throw new DuplicateBookException("Book ID already exists.");
-            }
+        if (bookDAO.existsById(newBook.getBookId())) {
+            throw new DuplicateBookException("Book ID already exists.");
         }
-        books.add(newBook);
-        return true;
+        return bookDAO.addBook(newBook);
     }
     @Override
     public List<Book> getAllBooks() {
-        return Collections.unmodifiableList(books);
+        return bookDAO.getAllBooks();
     }
     @Override
     public Book searchBook(int bookId) {
-        for (Book book : books) {
-            if (book.getBookId() == bookId) {
-                return book;
-            }
+        Book book = bookDAO.getBookById(bookId);
+        if (book == null) {
+            throw new BookNotFoundException("Book with ID " + bookId + " not found.");
         }
-        throw new BookNotFoundException("Book with ID " + bookId + " not found.");
+        return book;
     }
     @Override
     public boolean updateBook(Book updatedBook) {
-
-        Book existingBook = searchBook(updatedBook.getBookId());
-        existingBook.setTitle(updatedBook.getTitle());
-        existingBook.setAuthor(updatedBook.getAuthor());
-        existingBook.setCategory(updatedBook.getCategory());
-        existingBook.setPrice(updatedBook.getPrice());
-        existingBook.setAvailable(updatedBook.isAvailable());
-        return true;
+        if (!bookDAO.existsById(updatedBook.getBookId())) {
+            throw new BookNotFoundException("Book with ID " + updatedBook.getBookId() + " not found.");
+        }
+        return bookDAO.updateBook(updatedBook);
     }
     @Override
     public boolean deleteBook(int bookId) {
-        Book existingBook = searchBook(bookId);
-        books.remove(existingBook);
-        return true;
+        if (!bookDAO.existsById(bookId)) {
+            throw new BookNotFoundException("Book with ID " + bookId + " not found.");
+        }
+        return bookDAO.deleteBook(bookId);
     }
     @Override
     public int getTotalBooks() {
-        return books.size();
+        return bookDAO.getTotalBooks();
     }
     @Override
     public int getAvailableBooks() {
-        int count = 0;
-        for (Book book : books) {
-            if (book.isAvailable()) {
-                count++;
-            }
-        }
-        return count;
+        return bookDAO.getAvailableBooks();
     }
     @Override
     public int getIssuedBooks() {
-        return books.size() - getAvailableBooks();
+        return bookDAO.getIssuedBooks();
     }
 }
