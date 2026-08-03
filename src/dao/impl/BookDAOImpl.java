@@ -4,6 +4,9 @@ import dao.BookDAO;
 import database.DBConnection;
 import enums.BookCategory;
 import model.Book;
+
+import java.net.ConnectException;
+import java.security.PrivilegedAction;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -153,16 +156,60 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public int getTotalBooks() {
+        String sql = """
+            SELECT COUNT(*)
+            FROM book
+            """;
+        try(Connection connection = DBConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ResultSet resultSet = preparedStatement.executeQuery()){
+            if(resultSet.next()){
+                return resultSet.getInt(1);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
         return 0;
     }
 
     @Override
     public int getAvailableBooks() {
+        String sql = """
+            SELECT COUNT(*)
+            FROM book
+            WHERE is_available = TRUE
+            """;
+        try(Connection connection = DBConnection.getConnection();
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement(sql);
+            ResultSet resultSet =
+                    preparedStatement.executeQuery()
+        ){
+            if(resultSet.next()){
+                return resultSet.getInt(1);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
         return 0;
     }
 
     @Override
     public int getIssuedBooks() {
+        String sql = """
+            SELECT COUNT(*)
+            FROM book
+            WHERE is_available = FALSE
+            """;
+        try(Connection connection = DBConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ResultSet resultSet = preparedStatement.executeQuery()){
+            if(resultSet.next()){
+                return resultSet.getInt(1);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
         return 0;
     }
 
