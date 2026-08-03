@@ -9,10 +9,11 @@ import java.util.List;
 
 public class Main{
     public static void main(String[] args) {
-        Book updatedBook = new Book(101, "Clean Code Second Edition", "Robert C. Martin",
-                        BookCategory.TECHNOLOGY, 899, true);
         BookDAO dao = new BookDAOImpl();
-        System.out.println(dao.updateBook(updatedBook));
+
+        boolean deleted = dao.deleteBook(1001);
+
+        System.out.println(deleted);
         }
 }
 //

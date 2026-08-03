@@ -117,7 +117,19 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public boolean deleteBook(int bookId) {
-        return false;
+        String sql = """
+            DELETE FROM book
+            WHERE book_id = ?
+            """;
+        try(Connection connection = DBConnection.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            preparedStatement.setInt(1, bookId);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected >0;
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
