@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MemberDAOImpl extends BaseDAO implements MemberDAO {
@@ -68,7 +69,27 @@ public class MemberDAOImpl extends BaseDAO implements MemberDAO {
 
     @Override
     public List<Member> getAllMembers() {
-        return List.of();
+        String sql = """
+            SELECT
+                member_id,
+                member_name,
+                phone_number,
+                email,
+                membership_type
+            FROM member
+            ORDER BY member_id
+            """;
+        List<Member> members = new ArrayList<>();
+        try (Connection connection = getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                members.add(mapResultSetToMember(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return members;
     }
 
     @Override
