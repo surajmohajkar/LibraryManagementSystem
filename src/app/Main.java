@@ -8,8 +8,8 @@ import model.Member;
 public class Main {
     public static void main(String[] args) {
         MemberDAO dao = new MemberDAOImpl();
-        System.out.println(dao.existsById(1));
-        System.out.println(dao.existsById(999));
+        Member member = dao.getMemberById(1);
+        System.out.println(member);
     }
 }
 //
