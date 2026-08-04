@@ -2,7 +2,9 @@ package app;
 
 import constants.AppConstants;
 import dao.BookDAO;
+import dao.MemberDAO;
 import dao.impl.BookDAOImpl;
+import dao.impl.MemberDAOImpl;
 import enums.BookCategory;
 import enums.MembershipType;
 import interfaces.BookServiceInterface;
@@ -27,7 +29,8 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         BookDAO bookDAO = new BookDAOImpl();
         BookServiceInterface bookService = new BookService(bookDAO);
-        MemberServiceInterface memberService = new MemberService();
+        MemberDAO memberDAO = new MemberDAOImpl();
+        MemberServiceInterface memberService = new MemberService(memberDAO);
         IssueServiceInterface issueService = new IssueService(bookService, memberService);
         boolean running = true;
 
