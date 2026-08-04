@@ -5,13 +5,12 @@ import exception.DuplicateBookException;
 import interfaces.BookServiceInterface;
 import model.Book;
 import dao.BookDAO;
-import dao.impl.BookDAOImpl;
 import java.util.List;
 
 public class BookService implements BookServiceInterface {
     private final BookDAO bookDAO;
-    public BookService() {
-        this.bookDAO = new BookDAOImpl();
+    public BookService(BookDAO bookDAO) {
+        this.bookDAO = bookDAO;
     }
 
     @Override
