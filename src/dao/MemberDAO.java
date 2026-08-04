@@ -9,5 +9,6 @@ public interface MemberDAO {
     List<Member> getAllMembers();
     boolean updateMember(Member member);
     boolean deleteMember(int memberId);
+    boolean existsById(int memberId);
     int getTotalMembers();
 }
