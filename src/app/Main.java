@@ -5,11 +5,15 @@ import dao.impl.MemberDAOImpl;
 import enums.MembershipType;
 import model.Member;
 
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
         MemberDAO dao = new MemberDAOImpl();
-        Member member = dao.getMemberById(1);
-        System.out.println(member);
+        List<Member> members = dao.getAllMembers();
+        for (Member member : members) {
+            System.out.println(member);
+        }
     }
 }
 //
