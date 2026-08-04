@@ -1,12 +1,9 @@
 package dao.impl;
 
+import dao.BaseDAO;
 import dao.BookDAO;
-import database.DBConnection;
 import enums.BookCategory;
 import model.Book;
-
-import java.net.ConnectException;
-import java.security.PrivilegedAction;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,14 +11,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookDAOImpl implements BookDAO {
+public class BookDAOImpl extends BaseDAO implements BookDAO {
 
     @Override
     public boolean addBook(Book book) {
         String sql = """
             INSERT INTO book(book_id, title, author, category, price, is_available)VALUES (?, ?, ?, ?, ?, ?)""";
 
-        try (Connection connection = DBConnection.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, book.getBookId());
             preparedStatement.setString(2, book.getTitle());
             preparedStatement.setString(3, book.getAuthor());
@@ -49,7 +47,7 @@ public class BookDAOImpl implements BookDAO {
             FROM book
             WHERE book_id = ?
             """;
-        try(Connection connection = DBConnection.getConnection();
+        try(Connection connection = getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(sql)){
             preparedStatement.setInt(1,bookId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -76,7 +74,7 @@ public class BookDAOImpl implements BookDAO {
             ORDER BY book_id
             """;
         List<Book>books = new ArrayList<>();
-        try(Connection connection = DBConnection.getConnection();
+        try(Connection connection = getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery()
             ){
@@ -102,8 +100,8 @@ public class BookDAOImpl implements BookDAO {
             WHERE
                 book_id = ?
             """;
-        try(Connection connection = DBConnection.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+        try(Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)){
             preparedStatement.setString(1,book.getTitle());
             preparedStatement.setString(2,book.getAuthor());
             preparedStatement.setString(3,book.getCategory().name());
@@ -124,8 +122,8 @@ public class BookDAOImpl implements BookDAO {
             DELETE FROM book
             WHERE book_id = ?
             """;
-        try(Connection connection = DBConnection.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+        try(Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)){
             preparedStatement.setInt(1, bookId);
             int rowsAffected = preparedStatement.executeUpdate();
             return rowsAffected >0;
@@ -142,9 +140,8 @@ public class BookDAOImpl implements BookDAO {
         FROM book
         WHERE book_id = ?
         """;
-        try (
-                Connection connection = DBConnection.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, bookId);
             ResultSet resultSet = preparedStatement.executeQuery();
             return resultSet.next();
@@ -160,9 +157,9 @@ public class BookDAOImpl implements BookDAO {
             SELECT COUNT(*)
             FROM book
             """;
-        try(Connection connection = DBConnection.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ResultSet resultSet = preparedStatement.executeQuery()){
+        try(Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery()){
             if(resultSet.next()){
                 return resultSet.getInt(1);
             }
@@ -179,11 +176,9 @@ public class BookDAOImpl implements BookDAO {
             FROM book
             WHERE is_available = TRUE
             """;
-        try(Connection connection = DBConnection.getConnection();
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement(sql);
-            ResultSet resultSet =
-                    preparedStatement.executeQuery()
+        try(Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery()
         ){
             if(resultSet.next()){
                 return resultSet.getInt(1);
@@ -201,9 +196,9 @@ public class BookDAOImpl implements BookDAO {
             FROM book
             WHERE is_available = FALSE
             """;
-        try(Connection connection = DBConnection.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        ResultSet resultSet = preparedStatement.executeQuery()){
+        try(Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery()){
             if(resultSet.next()){
                 return resultSet.getInt(1);
             }
