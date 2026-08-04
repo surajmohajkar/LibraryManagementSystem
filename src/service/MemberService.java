@@ -1,58 +1,54 @@
 package service;
 
+import dao.MemberDAO;
+import dao.impl.MemberDAOImpl;
 import exception.DuplicateMemberException;
 import exception.MemberNotFoundException;
 import interfaces.MemberServiceInterface;
 import model.Member;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
 
 public class MemberService implements MemberServiceInterface {
-    private final List<Member> members;
+    private final MemberDAO memberDAO;
     public MemberService() {
-        members = new ArrayList<>();
+        this.memberDAO = new MemberDAOImpl();
     }
     @Override
     public void registerMember(Member newMember) {
-        for (Member existingMember : members) {
-            if (existingMember.getMemberId() == newMember.getMemberId()) {
-                throw new DuplicateMemberException("Member ID already exists.");
-            }
+        if (memberDAO.existsById(newMember.getMemberId())) {
+            throw new DuplicateMemberException("Member ID already exists.");
         }
-        members.add(newMember);
+        memberDAO.registerMember(newMember);
     }
     @Override
     public Member searchMember(int memberId) {
-        for (Member member : members) {
-            if (member.getMemberId() == memberId) {
-                return member;
-            }
+        Member member = memberDAO.getMemberById(memberId);
+        if (member == null) {
+            throw new MemberNotFoundException("Member with ID " + memberId + " not found.");
         }
-        throw new MemberNotFoundException("Member with ID " + memberId + " not found.");
+        return member;
     }
     @Override
     public List<Member> getAllMembers() {
-        return Collections.unmodifiableList(members);
+        return memberDAO.getAllMembers();
     }
     @Override
     public boolean updateMember(Member updatedMember) {
-
-        Member existingMember = searchMember(updatedMember.getMemberId());
-        existingMember.setName(updatedMember.getName());
-        existingMember.setPhoneNumber(updatedMember.getPhoneNumber());
-        existingMember.setEmail(updatedMember.getEmail());
-        existingMember.setMembershipType(updatedMember.getMembershipType());
-        return true;
+        if (!memberDAO.existsById(updatedMember.getMemberId())) {
+            throw new MemberNotFoundException("Member with ID " + updatedMember.getMemberId() + " not found.");
+        }
+        return memberDAO.updateMember(updatedMember);
     }
     @Override
     public boolean deleteMember(int memberId) {
-        Member existingMember = searchMember(memberId);
-        members.remove(existingMember);
-        return true;
+        if (!memberDAO.existsById(memberId)) {
+            throw new MemberNotFoundException("Member with ID " + memberId + " not found.");
+        }
+        return memberDAO.deleteMember(memberId);
     }
     @Override
     public int getTotalMembers() {
-        return members.size();
+        return memberDAO.getTotalMembers();
     }
 }
