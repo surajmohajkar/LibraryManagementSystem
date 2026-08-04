@@ -10,7 +10,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         MemberDAO dao = new MemberDAOImpl();
-        System.out.println(dao.deleteMember(3));
+        System.out.println(dao.getTotalMembers());
     }
 }
 //
