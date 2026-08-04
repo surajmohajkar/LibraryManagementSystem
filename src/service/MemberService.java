@@ -7,12 +7,11 @@ import exception.MemberNotFoundException;
 import interfaces.MemberServiceInterface;
 import model.Member;
 import java.util.List;
-import java.util.Collections;
 
 public class MemberService implements MemberServiceInterface {
     private final MemberDAO memberDAO;
-    public MemberService() {
-        this.memberDAO = new MemberDAOImpl();
+    public MemberService(MemberDAO memberDAO) {
+        this.memberDAO = memberDAO;
     }
     @Override
     public void registerMember(Member newMember) {
