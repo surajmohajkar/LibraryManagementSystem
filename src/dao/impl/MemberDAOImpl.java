@@ -5,13 +5,13 @@ import dao.MemberDAO;
 import model.Member;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
 public class MemberDAOImpl extends BaseDAO implements MemberDAO {
     @Override
     public boolean registerMember(Member member) {
-
         String sql = """
             INSERT INTO member
             (
@@ -23,11 +23,8 @@ public class MemberDAOImpl extends BaseDAO implements MemberDAO {
             )
             VALUES (?, ?, ?, ?, ?)
             """;
-
-        try (
-                Connection connection = getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql)
-        ) {
+        try(Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)){
             preparedStatement.setInt(1, member.getMemberId());
             preparedStatement.setString(2, member.getName());
             preparedStatement.setString(3, member.getPhoneNumber());
@@ -63,7 +60,21 @@ public class MemberDAOImpl extends BaseDAO implements MemberDAO {
 
     @Override
     public boolean existsById(int memberId) {
-        return false;
+        String sql = """
+            SELECT 1
+            FROM member
+            WHERE member_id = ?
+            """;
+        try(Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            preparedStatement.setInt(1, memberId);
+            try(ResultSet resultSet = preparedStatement.executeQuery()){
+                return resultSet.next();
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
