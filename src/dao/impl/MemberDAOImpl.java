@@ -157,7 +157,16 @@ public class MemberDAOImpl extends BaseDAO implements MemberDAO {
 
     @Override
     public int getTotalMembers() {
-        return 0;
+        String sql = """
+            SELECT COUNT(*)
+            FROM member
+            """;
+        try {
+            return executeCountQuery(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
     private Member mapResultSetToMember(ResultSet resultSet)  throws SQLException {
         return new Member(
@@ -166,5 +175,15 @@ public class MemberDAOImpl extends BaseDAO implements MemberDAO {
                 resultSet.getString("phone_number"),
                 resultSet.getString("email"),
                 MembershipType.valueOf(resultSet.getString("membership_type")));
+    }
+    private int executeCountQuery(String sql) throws SQLException {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+            return 0;
+        }
     }
 }
