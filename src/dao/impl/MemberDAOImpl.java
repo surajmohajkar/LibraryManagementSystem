@@ -121,7 +121,19 @@ public class MemberDAOImpl extends BaseDAO implements MemberDAO {
 
     @Override
     public boolean deleteMember(int memberId) {
-        return false;
+        String sql = """
+            DELETE FROM member
+            WHERE member_id = ?
+            """;
+        try(Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, memberId);
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
