@@ -2,6 +2,7 @@ package dao.impl;
 
 import dao.BaseDAO;
 import dao.MemberDAO;
+import enums.MembershipType;
 import model.Member;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -39,7 +40,29 @@ public class MemberDAOImpl extends BaseDAO implements MemberDAO {
     }
 
     @Override
-    public Member getMemberById(int MemberId) {
+    public Member getMemberById(int memberId) {
+        String sql = """
+            SELECT
+                member_id,
+                member_name,
+                phone_number,
+                email,
+                membership_type
+            FROM member
+            WHERE member_id = ?
+            """;
+
+        try (Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, memberId);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return mapResultSetToMember(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -80,5 +103,13 @@ public class MemberDAOImpl extends BaseDAO implements MemberDAO {
     @Override
     public int getTotalMembers() {
         return 0;
+    }
+    private Member mapResultSetToMember(ResultSet resultSet)  throws SQLException {
+        return new Member(
+                resultSet.getInt("member_id"),
+                resultSet.getString("member_name"),
+                resultSet.getString("phone_number"),
+                resultSet.getString("email"),
+                MembershipType.valueOf(resultSet.getString("membership_type")));
     }
 }
