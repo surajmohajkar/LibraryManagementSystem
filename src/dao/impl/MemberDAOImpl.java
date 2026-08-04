@@ -94,7 +94,29 @@ public class MemberDAOImpl extends BaseDAO implements MemberDAO {
 
     @Override
     public boolean updateMember(Member member) {
-        return false;
+        String sql = """
+            UPDATE member
+            SET
+                member_name = ?,
+                phone_number = ?,
+                email = ?,
+                membership_type = ?
+            WHERE
+                member_id = ?
+            """;
+        try(Connection connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)){
+            preparedStatement.setString(1,member.getName());
+            preparedStatement.setString(2,member.getPhoneNumber());
+            preparedStatement.setString(3,member.getEmail());
+            preparedStatement.setString(4, member.getMembershipType().name());
+            preparedStatement.setInt(5,member.getMemberId());
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        }catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
