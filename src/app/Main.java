@@ -10,10 +10,14 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         MemberDAO dao = new MemberDAOImpl();
-        List<Member> members = dao.getAllMembers();
-        for (Member member : members) {
-            System.out.println(member);
-        }
+        Member member = new Member(
+                1,
+                "Suraj Mohajkar",
+                "9876500000",
+                "surajm@gmail.com",
+                MembershipType.PREMIUM
+        );
+        System.out.println(dao.updateMember(member));
     }
 }
 //
